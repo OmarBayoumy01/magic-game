@@ -1,29 +1,38 @@
-@media (min-width: 768px) {
-  .container {
-    width: 550px;
-  }
-}
-
-/* Medium */
-
-@media (min-width: 992px) {
-  .container {
-    width: 750px;
-  }
-}
-
-/* Large */
-
-@media (min-width: 1200px) {
-  .container {
-    width: 850px;
-  }
-}
-
 .container {
+  max-width: 860px;
   margin: 40px auto;
+  padding: 0 20px;
 }
-button {
+
+.game-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.game-title {
+  color: #333;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.game-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.stat-group {
+  display: flex;
+  gap: 20px;
+}
+
+.stat {
+  font-size: 1.1rem;
+}
+
+.new-game-btn {
   background: none;
   border: 2px solid #fff;
   padding: 6px 12px;
@@ -32,14 +41,83 @@ button {
   font-weight: bold;
   cursor: pointer;
   font-size: 1em;
+  transition: background-color 0.3s;
 }
-button:hover {
+
+.new-game-btn:hover {
   background: #c23866;
   color: #fff;
 }
+
 .card-grid {
-  margin-top: 40px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+}
+
+.card {
+  position: relative;
+}
+
+.card img {
+  width: 100%;
+  display: block;
+  border: 2px solid #fff;
+  border-radius: 6px;
+}
+
+/* front of card - the picture */
+.card .front {
+  transform: rotateY(90deg);
+  transition: all ease-in 0.2s;
+  position: absolute;
+}
+
+.flipped .front {
+  transform: rotateY(0deg);
+  transition-delay: 0.2s;
+}
+
+/* back of card - cover */
+.card .back {
+  transition: all ease-in 0.2s;
+  transition-delay: 0.2s;
+}
+
+.flipped .back {
+  transform: rotateY(90deg);
+  transition-delay: 0s;
+}
+
+.win-message {
+  text-align: center;
+  margin-top: 20px;
+  padding: 20px;
+  background: #4ade80;
+  color: white;
+  border-radius: 8px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .game-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
