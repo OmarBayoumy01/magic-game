@@ -65,42 +65,45 @@ function App() {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
+  // Move the resetTurn function before the useEffect that uses it
+  const resetTurn = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+  };
+
   useEffect(() => {
     if (choiceOne && choiceTwo) {
       setMoves((prev) => prev + 1);
 
       if (choiceOne.src === choiceTwo.src) {
-        setScore((prev) => prev + 10);
-        setCards((prevCards) => {
-          const newCards = prevCards.map((card) => {
-            if (card.src === choiceOne.src) {
-              return { ...card, matched: true };
+        setScore((prevScore) => {
+          const newScore = prevScore + 10;
+          setCards((prevCards) => {
+            const newCards = prevCards.map((card) => {
+              if (card.src === choiceOne.src) {
+                return { ...card, matched: true };
+              }
+              return card;
+            });
+
+            if (newCards.every((card) => card.matched)) {
+              setGameWon(true);
+              if (newScore > bestScore) {
+                setBestScore(newScore);
+                localStorage.setItem("bestScore", newScore);
+              }
             }
-            return card;
+
+            return newCards;
           });
-
-          if (newCards.every((card) => card.matched)) {
-            setGameWon(true);
-            const currentScore = score + 10;
-            if (currentScore > bestScore) {
-              setBestScore(currentScore);
-              localStorage.setItem("bestScore", currentScore);
-            }
-          }
-
-          return newCards;
+          return newScore;
         });
         resetTurn();
       } else {
         setTimeout(() => resetTurn(), 1000);
       }
     }
-  }, [choiceOne, choiceTwo]);
-
-  const resetTurn = () => {
-    setChoiceOne(null);
-    setChoiceTwo(null);
-  };
+  }, [choiceOne, choiceTwo, bestScore]); // Added bestScore to dependencies
 
   // Start new game automatically on component mount
   useEffect(() => {
@@ -161,4 +164,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
